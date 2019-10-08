@@ -1,0 +1,18 @@
+{
+  "name": "compiler-server",
+  "version": "0.0.1",
+  "description": "emscripten as a service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "emscripten",
+    "wasm"
+  ],
+  "author": "Sean Pollock",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
