@@ -16,7 +16,6 @@ app.post('/compile', upload.single('file'), async (req, res, next) => {
     console.log('### Uploaded new code. id:', id)
     await write(id, fileName, fileBuffer, fileName2, fileBuffer2)
     await emcc(id, fileName)
-    console.log('after emcc')
     const response = await read(id)
     res.send(response)
     await clean(id)
@@ -51,17 +50,13 @@ const write = async (id, fileName, fileBuffer, fileName2, fileBuffer2) => {
 const emcc = (id, fileName) => new Promise((resolve, reject) => {
   exec(`contract_path=${process.cwd()}/${id}/${fileName} id=${id} contract_name=${fileName} . ./compile.sh`,
   (err, stdout, stderr) => {
-    console.log('inside emcc')
     if (err) reject(err)
-    if (stderr) console.log(stderr)
     console.log(stdout)
-    console.log('about to resolve')
     resolve(true)
   })
 })
 
 const read = async (id) => {
-  console.log('inside read')
   const wasmFile = await readFile(`${id}/contract_name.out.wasm`)
   const jsFile = await readFile(`${id}/contract_name.out.js`)
   return JSON.stringify({
