@@ -27,8 +27,8 @@ app.post('/compile', upload.single('file'), async (req, res, next) => {
     const wasmFile = await readFile(`${id}/contract_name.out.wasm`)
     const jsFile = await readFile(`${id}/contract_name.out.js`)
     res.send(JSON.stringify({
-      wasmFile,
-      jsFile
+      wasmFile: wasmFile.toString('hex'),
+      jsFile: jsFile.toString('hex')
     }))
   })
 

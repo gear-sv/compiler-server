@@ -1,7 +1,8 @@
 const axios = require('axios')
+const FormData = require('form-data')
 const util = require('util')
 const readFile = util.promisify(require('fs').readFile)
-const FormData = require('form-data')
+const writeFile = util.promisify(require('fs').writeFile)
 
 const port = 7050
 
@@ -15,11 +16,18 @@ const test = (async () => {
   form.append('fileName2', 'FungibleToken.h')
   const response = await axios({
     method: 'post',
-    url: `http://35.203.71.42:${port}/compile`,
+    url: `http://34.95.36.11:${port}/compile`,
     data: form,
     headers: {
       'content-type': `multipart/form-data; boundary=${form._boundary}`
     }
   })
   console.log("response", response)
+  // const wasmFile = Buffer.from(response.body.wasmFile, 'hex')
+  // const jsFile = Buffer.from(response.body.jsFile, 'hex')
+  // console.log("wasmFile", wasmFile)
+  // console.log("jsFile", jsFile)
+  // await writeFile(`${process.cwd()}/output/${contractName}.cpp`, wasmFile)
+  // await writeFile(`${process.cwd()}/output/${contractName}.js`, jsFile)
+
 })()
