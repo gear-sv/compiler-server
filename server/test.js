@@ -16,7 +16,7 @@ const test = (async () => {
   form.append('fileName2', 'FungibleToken.h')
   const response = await axios({
     method: 'post',
-    url: `http://compiler.gear.computer/emcc`,
+    url: `http://compile.gear.computer/emcc`,
     data: form,
     headers: {
       'content-type': `multipart/form-data; boundary=${form._boundary}`
