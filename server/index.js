@@ -25,6 +25,18 @@ app.post('/compile', upload.single('file'), async (req, res, next) => {
   }
 })
 
+/* HEALTH CHECKS */
+
+
+const router = express.Router();
+
+  router.get('/', function (req, res, next) {
+    res.json({status: 'UP'});
+  })
+
+  app.use("/healthz", router);
+
+
 /* UTILS */
 
 const parse = (req) => {
