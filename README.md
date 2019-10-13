@@ -2,5 +2,5 @@
 
 _emscripten as a service_
 
-The emcc compiler server is reachable at http://compiler.gear.computer/emcc. 
+The emcc compiler server is reachable at http://compile.gear.computer/emcc. 
 
