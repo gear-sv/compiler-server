@@ -10,13 +10,13 @@ const { exec } = require('child_process')
 const app = express()
 const upload = multer()
 
-app.post('/compile', upload.single('file'), async (req, res, next) => {
+app.post('/', upload.single('file'), async (req, res, next) => {
   try {
     const { id, fileName, fileBuffer, fileName2, fileBuffer2 } = parse(req)
     console.log('### Uploaded new code. id:', id)
     await write(id, fileName, fileBuffer, fileName2, fileBuffer2)
     await emcc(id, fileName)
-    const response = await read(id)
+    const response = await read(id, fileName)
     res.send(response)
     await clean(id)
     console.log('### Deleted compiled code. id:', id)
@@ -48,17 +48,22 @@ const write = async (id, fileName, fileBuffer, fileName2, fileBuffer2) => {
 }
 
 const emcc = (id, fileName) => new Promise((resolve, reject) => {
-  exec(`contract_path=${process.cwd()}/${id}/${fileName} id=${id} contract_name=${fileName} . ./compile.sh`,
+  const contractPath = `${process.cwd()}/${id}/${fileName}`
+  const contractName = `${fileName.slice(0, -4)}.out.js`
+  exec(
+    `contract_path=${contractPath} id=${id} contract_name=${contractName} . ./compile.sh`,
   (err, stdout, stderr) => {
     if (err) reject(err)
+    if (stderr) console.log(stderr)
     console.log(stdout)
     resolve(true)
   })
 })
 
-const read = async (id) => {
-  const wasmFile = await readFile(`${id}/contract_name.out.wasm`)
-  const jsFile = await readFile(`${id}/contract_name.out.js`)
+const read = async (id, fileName) => {
+  const name = fileName.slice(0, -4)
+  const wasmFile = await readFile(`${id}/${name}.out.wasm`)
+  const jsFile = await readFile(`${id}/${name}.out.js`)
   return JSON.stringify({
     wasmFile: wasmFile.toString('hex'),
     jsFile: jsFile.toString('hex')
