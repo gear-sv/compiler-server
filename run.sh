@@ -14,6 +14,4 @@ source emsdk_env.sh
 
 cd /server
 
-npm install
-
 npm run start
