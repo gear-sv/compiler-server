@@ -10,7 +10,7 @@ const { exec } = require('child_process')
 const app = express()
 const upload = multer()
 
-app.post('/', upload.single('file'), async (req, res, next) => {
+app.post('/emcc', upload.single('file'), async (req, res, next) => {
   try {
     const { id, fileName, fileBuffer, fileName2, fileBuffer2 } = parse(req)
     console.log('### Uploaded new code. id:', id)
@@ -24,6 +24,18 @@ app.post('/', upload.single('file'), async (req, res, next) => {
     next(error)
   }
 })
+
+/* HEALTH CHECKS */
+
+
+const router = express.Router();
+
+  router.get('/', function (req, res, next) {
+    res.json({status: 'UP'});
+  })
+
+  app.use("/healthz", router);
+
 
 /* UTILS */
 
