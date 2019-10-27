@@ -29,7 +29,7 @@ app.post('/emcc', upload.single('file'), async (req, res, next) => {
 
 /* HEALTH CHECKS */
 
-app.get('/', (req, res, next) => {
+app.get('/healthz', (req, res, next) => {
   res.json({status: 'UP'})
 })
 
